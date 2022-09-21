@@ -50,7 +50,7 @@ class TagsController extends Controller
     {
         // バリデーション
         $request->validate([
-            'title' => 'required',
+            'title' => ['required', 'unique:tags'],
         ]);
         
         $request->user()->tags()->create([

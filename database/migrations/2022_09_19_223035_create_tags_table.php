@@ -20,7 +20,7 @@ class CreateTagsTable extends Migration
             // // 外部キー制約
             $table->foreign('user_id')->references('id')->on('users');
             
-            $table->string('title');    // titleカラム
+            $table->string('title')->unique();    // titleカラム
             
             $table->timestamps();
         });

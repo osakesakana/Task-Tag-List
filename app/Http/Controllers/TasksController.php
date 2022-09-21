@@ -13,14 +13,26 @@ class TasksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $priority = $request->input('priority');
+        if($priority == null){
+            $priority = 0;
+        }
+        // dd($priority);
         $data = [];
         if (\Auth::check()) { // 認証済みの場合
             // 認証済みユーザを取得
             $user = \Auth::user();
             // ユーザの投稿の一覧を作成日時の降順で取得
-            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
+            if($priority == 0){
+                $tasks = $user->tasks()->where('priority', '高')->orderBy('created_at', 'desc')->paginate(10);
+            }elseif($priority == 1){
+                $tasks = $user->tasks()->where('priority', '中')->orderBy('created_at', 'desc')->paginate(10);
+            }else{
+                $tasks = $user->tasks()->where('priority', '低')->orderBy('created_at', 'desc')->paginate(10);
+            }
+            
             $tags = Tag::all();
 
             $data = [
@@ -31,46 +43,6 @@ class TasksController extends Controller
         }
 
         return view('tasks.index', $data);
-    }
-    
-    public function indexMiddle()
-    {
-        $data = [];
-        if (\Auth::check()) { // 認証済みの場合
-            // 認証済みユーザを取得
-            $user = \Auth::user();
-            // ユーザの投稿の一覧を作成日時の降順で取得
-            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
-            $tags = Tag::all();
-
-            $data = [
-                'user' => $user,
-                'tasks' => $tasks,
-                'tags' =>$tags,
-            ];
-        }
-
-        return view('tasks.indexmiddle', $data);
-    }
-
-    public function indexLow()
-    {
-        $data = [];
-        if (\Auth::check()) { // 認証済みの場合
-            // 認証済みユーザを取得
-            $user = \Auth::user();
-            // ユーザの投稿の一覧を作成日時の降順で取得
-            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
-            $tags = Tag::all();
-
-            $data = [
-                'user' => $user,
-                'tasks' => $tasks,
-                'tags' =>$tags,
-            ];
-        }
-
-        return view('tasks.indexlow', $data);
     }
     
     /**

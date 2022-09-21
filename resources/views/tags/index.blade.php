@@ -23,6 +23,8 @@
                     @endforeach
                 </tbody>
             </table>
+            {{-- ページネーションのリンク --}}
+            {{ $tags->links() }}
             {{-- タスク一覧ページへのリンク --}}
             {!! link_to_route('tasks.index', 'タスク一覧を確認する', [], ['class' => 'btn btn-success']) !!}
         @endif

@@ -17,7 +17,7 @@
                 </thead>
                 <tbody>
                     @foreach ($tasks as $task)
-                        @if ($task->progress != "100%" && $task->priority == "高")
+                        @if ($task->progress != "100%")
                         <tr>
                             {{-- タスク詳細ページへのリンク --}}
                             <td>{!! link_to_route('tasks.show', $task->id, ['task' => $task->id]) !!}</td>
@@ -29,11 +29,12 @@
                     @endforeach
                 </tbody>
             </table>
+            {{-- ページネーションのリンク --}}
+            {{ $tasks->links() }}
             {{-- タグ一覧ページへのリンク --}}
             {!! link_to_route('tags.index', 'タグ一覧を確認する', [], ['class' => 'btn btn-primary']) !!}
             @endif
 
-    
     @else
         <div class="center jumbotron">
             <div class="text-center">
