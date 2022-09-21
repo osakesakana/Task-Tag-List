@@ -2,28 +2,24 @@
 
 @section('content')
 
-    <h1>id = {{ $task->id }} のタスク詳細ページ</h1>
+    <h1>id = {{ $tag->id }} のタグ詳細ページ</h1>
 
     <table class="table table-bordered">
         <tr>
             <th>id</th>
-            <td>{{ $task->id }}</td>
+            <td>{{ $tag->id }}</td>
         </tr>
         <tr>
-            <th>ステータス</th>
-            <td>{{ $task->status }}</td>
-        </tr>
-        <tr>
-            <th>タスク</th>
-            <td>{{ $task->content }}</td>
+            <th>タグ名</th>
+            <td>{{ $tag->title }}</td>
         </tr>
     </table>
     
-    {{-- タスク編集ページへのリンク --}}
-    {!! link_to_route('tasks.edit', 'このタスクを編集', ['task' => $task->id], ['class' => 'btn btn-light']) !!}
+    {{-- タグ編集ページへのリンク --}}
+    {!! link_to_route('tags.edit', 'このタグを編集', ['tag' => $tag->id], ['class' => 'btn btn-light']) !!}
 
-    {{-- タスク削除フォーム --}}
-    {!! Form::model($task, ['route' => ['tasks.destroy', $task->id], 'method' => 'delete']) !!}
+    {{-- タグ削除フォーム --}}
+    {!! Form::model($tag, ['route' => ['tags.destroy', $tag->id], 'method' => 'delete']) !!}
         {!! Form::submit('削除', ['class' => 'btn btn-danger']) !!}
     {!! Form::close() !!}
 

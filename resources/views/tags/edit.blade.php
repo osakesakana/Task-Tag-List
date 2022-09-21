@@ -3,20 +3,15 @@
 @section('content')
 @if (Auth::check())
         {{ Auth::user()->name }}
-    <h1>id: {{ $task->id }} のタスク編集ページ</h1>
+    <h1>id: {{ $tag->id }} のタグ編集ページ</h1>
 
     <div class="row">
         <div class="col-6">
-            {!! Form::model($task, ['route' => ['tasks.update', $task->id], 'method' => 'put']) !!}
+            {!! Form::model($tag, ['route' => ['tags.update', $tag->id], 'method' => 'put']) !!}
             
                 <div class="form-group">
-                    {!! Form::label('status', 'ステータス:') !!}
-                    {!! Form::text('status', null, ['class' => 'form-control']) !!}
-                </div>
-
-                <div class="form-group">
-                    {!! Form::label('content', 'タスク:') !!}
-                    {!! Form::text('content', null, ['class' => 'form-control']) !!}
+                    {!! Form::label('title', 'タグ名:') !!}
+                    {!! Form::text('title', null, ['class' => 'form-control']) !!}
                 </div>
 
                 {!! Form::submit('更新', ['class' => 'btn btn-primary']) !!}

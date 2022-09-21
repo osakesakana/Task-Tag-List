@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Task;
 
 class TasksController extends Controller
 {
@@ -54,13 +55,15 @@ class TasksController extends Controller
     {
         // バリデーション
         $request->validate([
-            'status' => 'required|max:10',
+            'progress' => 'required',
+            'priority' => 'required',
             'content' => 'required',
         ]);
         
         $request->user()->tasks()->create([
+            'progress' => $request->progress,
+            'priority' => $request->priority,
             'content' => $request->content,
-            'status' => $request->status,
         ]);
 
         // トップページへリダイレクトさせる
@@ -119,13 +122,15 @@ class TasksController extends Controller
     {
         // バリデーション
         $request->validate([
-            'status' => 'required|max:10',
+            'progress' => 'required',
+            'priority' => 'required',
             'content' => 'required',
         ]);
         
         $task = Task::findOrFail($id);
         // メッセージを更新
-        $task->status = $request->status;
+        $task->progress = $request->progress;
+        $task->priority = $request->priority;
         $task->content = $request->content;
         $task->save();
 
@@ -149,5 +154,23 @@ class TasksController extends Controller
 
         // トップページへリダイレクトさせる
         return redirect('/');
+    }
+    
+    public function completed()
+    {
+        $data = [];
+        if (\Auth::check()) { // 認証済みの場合
+            // 認証済みユーザを取得
+            $user = \Auth::user();
+            // ユーザの投稿の一覧を作成日時の降順で取得
+            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
+
+            $data = [
+                'user' => $user,
+                'tasks' => $tasks,
+            ];
+        }
+
+        return view('tasks.completed', $data);
     }
 }

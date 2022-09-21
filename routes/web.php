@@ -28,5 +28,8 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout.get');
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
     Route::resource('tasks', 'TasksController', ['only' => ['index', 'edit', 'show', 'create', 'store', 'destroy']]);
-    Route::resource('tags', 'TagsController', ['only' => ['index', 'edit', 'show', 'create', 'store']]);   
+    Route::resource('tags', 'TagsController', ['only' => ['index', 'edit', 'show', 'create', 'store', 'destroy']]);
+
+    Route::get('tasks/completed', 'TasksController@completed')->name('tasks.completed');
 });
+

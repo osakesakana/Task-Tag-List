@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Task extends Model
+class Tag extends Model
 {
     protected $fillable = [
-        'content', 'priority', 'progress',
+        'title',
     ];
     
     public function user()
@@ -17,6 +17,6 @@ class Task extends Model
     
     public function tags()
     {
-        return $this->belongsTo(Tag::class);
+        return $this->hasMany(Task::class);
     }
 }
