@@ -47,6 +47,7 @@ class TasksController extends Controller
         }
 
         return view('tasks.index', $data);
+
     }
     
     /**
@@ -110,7 +111,7 @@ class TasksController extends Controller
         }
         
         // トップページへリダイレクトさせる
-        return redirect('/tasks');
+        return redirect('/');
     }
 
     /**

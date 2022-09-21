@@ -27,5 +27,7 @@
                     @endforeach
                 </tbody>
             </table>
+            {{-- タスク一覧ページへのリンク --}}
+            {!! link_to_route('tasks.index', 'タスク一覧に戻る', [], ['class' => 'btn btn-primary mt-4']) !!}
         @endif
 @endsection
