@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-@if (Auth::check())
-        {{ Auth::user()->name }}
     <h1>id: {{ $tag->id }} のタグ編集ページ</h1>
 
     <div class="row">
@@ -14,11 +12,9 @@
                     {!! Form::text('title', null, ['class' => 'form-control']) !!}
                 </div>
 
-                {!! Form::submit('更新', ['class' => 'btn btn-primary']) !!}
+                {!! Form::submit('更新', ['class' => 'btn btn-success']) !!}
 
             {!! Form::close() !!}
         </div>
     </div>
-@else
-@endif
 @endsection

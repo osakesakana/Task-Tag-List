@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Task;
+use App\Tag;
 
 class TasksController extends Controller
 {
@@ -19,18 +20,59 @@ class TasksController extends Controller
             // 認証済みユーザを取得
             $user = \Auth::user();
             // ユーザの投稿の一覧を作成日時の降順で取得
-            // （後のChapterで他ユーザの投稿も取得するように変更しますが、現時点ではこのユーザの投稿のみ取得します）
             $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
+            $tags = Tag::all();
 
             $data = [
                 'user' => $user,
                 'tasks' => $tasks,
+                'tags' =>$tags,
             ];
         }
 
         return view('tasks.index', $data);
     }
+    
+    public function indexMiddle()
+    {
+        $data = [];
+        if (\Auth::check()) { // 認証済みの場合
+            // 認証済みユーザを取得
+            $user = \Auth::user();
+            // ユーザの投稿の一覧を作成日時の降順で取得
+            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
+            $tags = Tag::all();
 
+            $data = [
+                'user' => $user,
+                'tasks' => $tasks,
+                'tags' =>$tags,
+            ];
+        }
+
+        return view('tasks.indexmiddle', $data);
+    }
+
+    public function indexLow()
+    {
+        $data = [];
+        if (\Auth::check()) { // 認証済みの場合
+            // 認証済みユーザを取得
+            $user = \Auth::user();
+            // ユーザの投稿の一覧を作成日時の降順で取得
+            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
+            $tags = Tag::all();
+
+            $data = [
+                'user' => $user,
+                'tasks' => $tasks,
+                'tags' =>$tags,
+            ];
+        }
+
+        return view('tasks.indexlow', $data);
+    }
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -39,9 +81,11 @@ class TasksController extends Controller
     public function create()
     {
         $task = new Task;
+        $tags = Tag::all();
 
         return view('tasks.create', [
             'task' => $task,
+            'tags' => $tags,
         ]);
     }
 
@@ -58,16 +102,18 @@ class TasksController extends Controller
             'progress' => 'required',
             'priority' => 'required',
             'content' => 'required',
+            'tag_id' => 'required',
         ]);
-        
+        // 
         $request->user()->tasks()->create([
             'progress' => $request->progress,
             'priority' => $request->priority,
             'content' => $request->content,
+            'tag_id' =>$request->tag_id,
         ]);
 
         // トップページへリダイレクトさせる
-        return redirect('/');
+        return redirect('/tasks');
     }
 
     /**
@@ -88,7 +134,7 @@ class TasksController extends Controller
         }
         
         // トップページへリダイレクトさせる
-        return redirect('/');
+        return redirect('/tasks');
     }
 
     /**
@@ -100,15 +146,17 @@ class TasksController extends Controller
     public function edit($id)
     {
         $task = Task::findOrFail($id);
+        $tags = Tag::all();
         
         if (\Auth::id() === $task->user_id) {
         // メッセージ編集ビューでそれを表示
         return view('tasks.edit', [
             'task' => $task,
+            'tags' => $tags,
         ]);
         }
         // トップページへリダイレクトさせる
-        return redirect('/');
+        return redirect('/tasks');
     }
 
     /**
@@ -125,17 +173,20 @@ class TasksController extends Controller
             'progress' => 'required',
             'priority' => 'required',
             'content' => 'required',
+            'tag_id' => 'required',
         ]);
-        
         $task = Task::findOrFail($id);
+
         // メッセージを更新
         $task->progress = $request->progress;
         $task->priority = $request->priority;
         $task->content = $request->content;
+        $task->tag_id = $request->tag_id;
+        
         $task->save();
 
         // トップページへリダイレクトさせる
-        return redirect('/');
+        return redirect('/tasks');
     }
 
     /**
@@ -153,7 +204,7 @@ class TasksController extends Controller
         }
 
         // トップページへリダイレクトさせる
-        return redirect('/');
+        return redirect('/tasks');
     }
     
     public function completed()

@@ -1,29 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-@if (Auth::check())
-        {{ Auth::user()->name }}
     <h1>id: {{ $task->id }} のタスク編集ページ</h1>
 
-    <div class="row">
+    <div class="row mt-5">
         <div class="col-6">
             {!! Form::model($task, ['route' => ['tasks.update', $task->id], 'method' => 'put']) !!}
             
-                <div class="form-group">
-                    {!! Form::label('status', 'ステータス:') !!}
-                    {!! Form::text('status', null, ['class' => 'form-control']) !!}
-                </div>
+                @include('tasks.form')
 
-                <div class="form-group">
-                    {!! Form::label('content', 'タスク:') !!}
-                    {!! Form::text('content', null, ['class' => 'form-control']) !!}
-                </div>
-
-                {!! Form::submit('更新', ['class' => 'btn btn-primary']) !!}
+                {!! Form::submit('タスクを更新する', ['class' => 'btn btn-primary mt-4']) !!}
 
             {!! Form::close() !!}
         </div>
     </div>
-@else
-@endif
 @endsection

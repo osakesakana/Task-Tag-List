@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     protected $fillable = [
-        'content', 'priority', 'progress',
+        'content', 'priority', 'progress', 'tag_id',
     ];
     
     public function user()
@@ -15,7 +15,7 @@ class Task extends Model
         return $this->belongsTo(User::class);
     }
     
-    public function tags()
+    public function tag()
     {
         return $this->belongsTo(Tag::class);
     }

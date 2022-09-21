@@ -13,7 +13,7 @@
 
 Route::get('/', 'TasksController@index');
 
-Route::resource('tasks', 'TasksController');
+// Route::resource('tasks', 'TasksController');
 
 // ユーザ登録
 Route::get('signup', 'Auth\RegisterController@showRegistrationForm')->name('signup.get');
@@ -27,9 +27,13 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout.get');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
-    Route::resource('tasks', 'TasksController', ['only' => ['index', 'edit', 'show', 'create', 'store', 'destroy']]);
-    Route::resource('tags', 'TagsController', ['only' => ['index', 'edit', 'show', 'create', 'store', 'destroy']]);
-
+    
+    Route::redirect('/', '/tasks');
+    Route::get('tasks/middle', 'TasksController@indexMiddle')->name('tasks.indexmiddle');
+    Route::get('tasks/low', 'TasksController@indexLow')->name('tasks.indexlow');
     Route::get('tasks/completed', 'TasksController@completed')->name('tasks.completed');
+    Route::resource('tasks', 'TasksController', ['only' => ['index', 'edit', 'show', 'create', 'store', 'update', 'destroy']]);
+    
+    Route::resource('tags', 'TagsController', ['only' => ['index', 'edit', 'show', 'create', 'store', 'update']]);
 });
 
