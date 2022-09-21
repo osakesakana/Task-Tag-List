@@ -19,7 +19,6 @@ class TasksController extends Controller
         if($priority == null){
             $priority = 0;
         }
-        // dd($priority);
         $data = [];
         if (\Auth::check()) { // 認証済みの場合
             // 認証済みユーザを取得
@@ -27,10 +26,13 @@ class TasksController extends Controller
             // ユーザの投稿の一覧を作成日時の降順で取得
             if($priority == 0){
                 $tasks = $user->tasks()->where('priority', '高')->orderBy('created_at', 'desc')->paginate(10);
+                $priority = 0 ;
             }elseif($priority == 1){
                 $tasks = $user->tasks()->where('priority', '中')->orderBy('created_at', 'desc')->paginate(10);
+                $priority = 1 ;
             }else{
                 $tasks = $user->tasks()->where('priority', '低')->orderBy('created_at', 'desc')->paginate(10);
+                $priority = 2 ;
             }
             
             $tags = Tag::all();
@@ -39,7 +41,9 @@ class TasksController extends Controller
                 'user' => $user,
                 'tasks' => $tasks,
                 'tags' =>$tags,
+                'priority' => $priority,
             ];
+        // dd($data);
         }
 
         return view('tasks.index', $data);
